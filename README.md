@@ -1,13 +1,31 @@
+<div align="center">
+
 # 救救小狗头
+
+<a href="https://unity.com/releases/editor/whats-new/2022.3.20#notes">
+<img src="./docs/images/badge_unity.png" alt="unity_version_2022.3.20f1" height=22 />
+</a>
+<a href="https://space.bilibili.com/3546697445673471">
+<img src="./docs/images/badge_btv.png" alt="bilibili_purpaca" height=22 />
+</a>
+
+</div>
+
 （此文档仍在编写中...）
 ### 项目概述
 哦不，小狗头马上就要被一群愤怒的蜜蜂攻击了！快画一条拥有物理效果的线条挡住蜂群的疯狂进攻，拯救我们可怜的小狗头! 
 
 <div align="center">
 
-![./docs/images/readme_game_sample.gif](./docs/images/readme_game_sample.gif)
+<br/>
+
+<img src="./docs/images/readme_game_sample.gif" alt="game_sample" height=256 />
+
+<font size=2>游戏示例 </font>
 
 </div>
+
+<br/>
 
 这是一个由Unity制作的2D游戏，使用的Unity编辑器版本为 [2022.3.20f1](https://unity.com/releases/editor/whats-new/2022.3.20#notes) 。
 
