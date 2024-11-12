@@ -1,0 +1,8 @@
+function Awake()
+local finger = CS.UnityEngine.GameObject.Find('level_tutorial_finger')
+
+local lineDrawer = CS.UnityEngine.GameObject.FindFirstObjectByType(typeof(CS.LineDrawer))
+lineDrawer:AddOnDrawEndCallback(function (line)
+    finger:SetActive(false)
+end)
+end
