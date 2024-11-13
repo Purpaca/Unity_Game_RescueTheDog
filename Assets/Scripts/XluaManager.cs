@@ -1,7 +1,5 @@
-using UnityEngine;
 using Singleton;
 using XLua;
-using System.Text;
 
 public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
 {
