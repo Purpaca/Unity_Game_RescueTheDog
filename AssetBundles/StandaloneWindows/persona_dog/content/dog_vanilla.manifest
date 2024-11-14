@@ -1,0 +1,51 @@
+ManifestFileVersion: 0
+CRC: 1434028483
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7893b8e0a857b862f76448b4b480d3d5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ba1f1e87549cc24a3cfb87db07e40182
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 7893b8e0a857b862f76448b4b480d3d5
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Artistic/Dogs/Animation/dog_vanilla_damaged_idle.anim
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_laugh_1.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_idel_2.png
+- Assets/Artistic/Dogs/Animation/controller_dog_vanilla.controller
+- Assets/Artistic/Dogs/Animation/dog_vanilla_damaged_crying.anim
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_idel_0.png
+- Assets/Artistic/Dogs/Animation/dog_vanilla_idle.anim
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_crying_0.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_laugh_2.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_crying_3.png
+- Assets/Artistic/Dogs/Animation/dog_vanilla_crying.anim
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_crying_1.png
+- Assets/Artistic/Dogs/Animation/dog_vanilla_laugh.anim
+- Assets/Artistic/Dogs/Sprites/dog_vanilla.spriteatlasv2
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_crying_2.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_idel_1.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_idel_2.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_crying_3.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_crying_1.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_idel_1.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_idel_0.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_damaged_crying_2.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_crying_0.png
+- Assets/Artistic/Dogs/Sprites/dog_vanilla_laugh_0.png
+Dependencies: []

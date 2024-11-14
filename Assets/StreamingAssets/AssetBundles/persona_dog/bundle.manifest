@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 552916119
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c1b9fd8e71856b1f77fe89acd7e60d99
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c016f21f134f0d3a6a67b236e7794d53
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: c1b9fd8e71856b1f77fe89acd7e60d99
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 50
+  Script: {instanceID: 0}
+- Class: 58
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 606e92e0c62a7034d9cd552c7c1309aa, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Artistic/Dogs/dog_vanilla.prefab
+Dependencies:
+- E:/Documents/Projects/Unity/Rescue the Dog/Unity Project/RescueTheDog/AssetBundles/StandaloneWindows/persona_dog/content/dog_vanilla

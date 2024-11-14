@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 3417530355
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f3ad921a6db322b3b08ed194464dd517
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 04fe97b7fc2f56a12f72365bd4c81609
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: f3ad921a6db322b3b08ed194464dd517
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Artistic/Audio/mus_bgm_music1.ogg
+- Assets/Artistic/Audio/mus_bgm_music2.ogg
+- Assets/Artistic/Audio/mus_bgm_music3.ogg
+- Assets/Artistic/Audio/mus_list.json
+Dependencies: []

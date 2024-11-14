@@ -250,6 +250,7 @@ namespace AssetManagement
         /// <param name="callback">加载请求结束后的回调</param>
         private IEnumerator LoadAssetAsyncCoroutine(string bundleName, string assetName, UnityAction<Object> callback)
         {
+            LoadAssetBundle(bundleName);
             var request = loadedBundles[bundleName].LoadAssetAsync(assetName);
             yield return request;
             callback?.Invoke(request.asset);
@@ -264,6 +265,7 @@ namespace AssetManagement
         /// <param name="callback">加载请求结束后的回调</param>
         private IEnumerator LoadAssetAsyncCoroutine<T>(string bundleName, string assetName, UnityAction<T> callback) where T : Object
         {
+            LoadAssetBundle(bundleName);
             var request = loadedBundles[bundleName].LoadAssetAsync(assetName);
             yield return request;
             callback?.Invoke(request.asset as T);
@@ -278,6 +280,7 @@ namespace AssetManagement
         /// <param name="callback">加载请求结束后的回调</param>
         private IEnumerator LoadAssetAsyncCoroutine(string bundleName, string assetName, Type type, UnityAction<Object> callback)
         {
+            LoadAssetBundle(bundleName);
             var request = loadedBundles[bundleName].LoadAssetAsync(assetName, type);
             yield return request;
             callback?.Invoke(request.asset);

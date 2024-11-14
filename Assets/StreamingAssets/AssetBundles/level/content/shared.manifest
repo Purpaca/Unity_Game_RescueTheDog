@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 3245245924
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 383884e1acdff6deef07399027219425
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d49d6a8843e27683ebe9363d5cc957b0
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 383884e1acdff6deef07399027219425
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.2D.SpriteShape.Runtime
+  ClassName: UnityEngine.U2D.AngleRange
+- AssemblyName: Unity.2D.SpriteShape.Runtime
+  ClassName: UnityEngine.U2D.CornerSprite
+Assets:
+- Assets/Artistic/SpriteShapes/level_terrain_grassland.asset
+- Assets/Artistic/SpriteShapes/Textures/level_terrain_grassland_fill.png
+- Assets/Artistic/SpriteShapes/Textures/level_terrain_grassland_top.png
+Dependencies: []

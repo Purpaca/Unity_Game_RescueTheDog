@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 2807543267
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6ac5107c5222df047854ae221658051f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d9e2de7a04085e879371161ac3c4aac1
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 6ac5107c5222df047854ae221658051f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 60
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 90539df1cd5704abcb25fec9f3f5f84b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 1971053207
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.2D.SpriteShape.Runtime
+  ClassName: UnityEngine.U2D.Spline
+- AssemblyName: Unity.2D.SpriteShape.Runtime
+  ClassName: UnityEngine.U2D.SplineControlPoint
+Assets:
+- Assets/Levels/Prefabs/level_tutorial.prefab
+Dependencies:
+- E:/Documents/Projects/Unity/Rescue the Dog/Unity Project/RescueTheDog/AssetBundles/StandaloneWindows/level/content/shared

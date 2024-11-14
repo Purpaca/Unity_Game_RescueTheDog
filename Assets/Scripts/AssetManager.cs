@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using AssetManagement;
 using Newtonsoft.Json;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 /// <summary>
 /// 资源管理器
@@ -16,6 +17,9 @@ public class AssetManager : AssetBundleManager
     private const string AssetBundleName_Lua = "script";
     private const string AssetBundleName_Music = "music";
     private const string AssetBundleName_Sound = "sound";
+    private const string AssetBundleName_UI = "ui/bundle";
+
+    private static AssetManager _myInstance;
 
     #region Public 方法
     /// <summary>
@@ -24,7 +28,13 @@ public class AssetManager : AssetBundleManager
     /// <returns></returns>
     public static AssetManager GetInstance() 
     {
-        return instance as AssetManager;
+        if (_myInstance is null)
+        {
+            GameObject gameObject = new GameObject(typeof(AssetManager).Name);
+            _myInstance = gameObject.AddComponent<AssetManager>();
+        }
+
+        return _myInstance;
     }
 
     /// <summary>
@@ -256,6 +266,42 @@ public class AssetManager : AssetBundleManager
     public void LoadSoundAsync(string assetName, UnityAction<AudioClip> callback)
     {
         LoadAssetAsync(AssetBundleName_Sound, assetName, callback);
+    }
+
+    /// <summary>
+    /// 加载指定名称的UI预制体资源
+    /// </summary>
+    /// <param name="assetName">要加载的UI预制体资源的名称</param>
+    public GameObject LoadUIPrefab(string assetName)
+    {
+        return LoadAsset<GameObject>(AssetBundleName_UI, assetName);
+    }
+
+    /// <summary>
+    /// 异步加载指定名称的UI预制体资源
+    /// </summary>
+    /// <param name="assetName">要加载的UI预制体资源的名称</param>
+    public AssetBundleRequest LoadUIPrefabAsync(string assetName)
+    {
+        return LoadAssetAsync<GameObject>(AssetBundleName_UI, assetName);
+    }
+
+    /// <summary>
+    /// 异步加载指定名称的UI预制体资源
+    /// </summary>
+    /// <param name="assetName">要加载的UI预制体资源的名称</param>
+    /// <param name="callback">资源加载请求结束后的回调方法</param>
+    public void LoadUIPrefabAsync(string assetName, UnityAction<GameObject> callback)
+    {
+        LoadAssetAsync(AssetBundleName_UI, assetName, callback);
+    }
+    #endregion
+
+    #region Unity 消息
+    protected override void Awake()
+    {
+        base.Awake();
+        _myInstance = this;
     }
     #endregion
 }

@@ -12,11 +12,6 @@ namespace AssetManagement.VersionControl
         public string version;
 
         /// <summary>
-        /// 资源集在当前平台资源存储路径下的相对路径
-        /// </summary>
-        public string path;
-
-        /// <summary>
         /// 资源集包含的所有资源的描述信息
         /// </summary>
         public AssetInfo[] assets;
