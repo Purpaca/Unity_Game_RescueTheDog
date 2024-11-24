@@ -27,20 +27,24 @@ namespace RESCUETHEDOG.Test
         private void Start()
         {
             #region 加载狗头相关
-            /*  同步加载狗头资源（通过）
-            var dog = Instantiate(AssetManager.LoadDogPrefab("dog_vanilla"));
+
+            /*
+            //  同步加载狗头资源（通过）
+            var dog = Instantiate(AssetManager.Instance.LoadDogPrefab("dog_vanilla"));
             dog.GetComponent<DogController>().SetDogeSimulated(false);
             */
 
-            /*  异步加载狗头资源，未托管（通过）
-            StartCoroutine(UnmanagedAsyncLoad<GameObject>(AssetManager.LoadDogPrefabAsync("dog_vanilla"), (asset) => {
+            /*
+            //  异步加载狗头资源，未托管（通过）
+            StartCoroutine(UnmanagedAsyncLoad<GameObject>(AssetManager.Instance.LoadDogPrefabAsync("dog_vanilla"), (asset) => {
                 var dog = Instantiate(asset);
                 dog.GetComponent<DogController>().SetDogeSimulated(false);
             }));
             */
 
-            /*  异步加载狗头资源，带回调（通过）
-            AssetManager.LoadDogPrefabAsync("dog_vanilla", (asset) => 
+            /*
+            //  异步加载狗头资源，带回调（通过）
+            AssetManager.Instance.LoadDogPrefabAsync("dog_vanilla", (asset) => 
             {
                 var dog = Instantiate(asset);
                 dog.GetComponent<DogController>().SetDogeSimulated(false);

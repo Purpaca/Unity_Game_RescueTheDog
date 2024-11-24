@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using AssetManagement;
 using Newtonsoft.Json;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 /// <summary>
 /// 资源管理器
@@ -23,18 +22,20 @@ public class AssetManager : AssetBundleManager
 
     #region Public 方法
     /// <summary>
-    /// 获取资源管理器的单例实例
+    /// 资源管理器的单例实例
     /// </summary>
-    /// <returns></returns>
-    public static AssetManager GetInstance() 
+    public static new AssetManager Instance
     {
-        if (_myInstance is null)
+        get
         {
-            GameObject gameObject = new GameObject(typeof(AssetManager).Name);
-            _myInstance = gameObject.AddComponent<AssetManager>();
-        }
+            if (_myInstance == null)
+            {
+                GameObject gameObject = new GameObject(typeof(AssetManager).Name);
+                _myInstance = gameObject.AddComponent<AssetManager>();
+            }
 
-        return _myInstance;
+            return _myInstance;
+        }
     }
 
     /// <summary>

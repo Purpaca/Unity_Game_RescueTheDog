@@ -66,9 +66,6 @@ public sealed class Launcher : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log(AssetManager.GetInstance());
-        Instantiate(AssetManager.GetInstance().LoadUIPrefab("Panel_SafeArea"));
-
         Destroy(splash.gameObject);
         Destroy(gameObject);
     }

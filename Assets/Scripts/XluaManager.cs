@@ -6,6 +6,11 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
     private LuaEnv luaEnv;
 
     #region 属性
+    public static LuaEnv LuaEnv
+    {
+        get => instance.luaEnv;
+    }
+
     public static LuaTable Global 
     {
         get => instance.luaEnv.Global;
@@ -13,6 +18,11 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
     #endregion
 
     #region Public 方法
+    public static void Init() 
+    {
+        _ = instance;
+    }
+
     public static object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null) 
     {
         return instance.luaEnv.DoString(chunk, chunkName, env);
@@ -33,7 +43,7 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
         // 添加基础自定义Loader - 从 AssetBundle 中加载
         luaEnv.AddLoader((ref string path) =>
         {
-            var asset = AssetManager.GetInstance().LoadLuaScript(path);
+            var asset = AssetManager.Instance.LoadLuaScript(path);
             return asset.bytes;
         });
     }
