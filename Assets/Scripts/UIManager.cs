@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
+using EventSystem = UnityEngine.EventSystems.EventSystem;
 using Singleton;
 using UIManagement;
 
@@ -32,9 +32,6 @@ public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
         Canvas canvas = Instantiate(asset).GetComponent<Canvas>();
         canvas.sortingOrder = order;
         order++;
-        
-        Resources.UnloadAsset(asset);
-        
         return canvas;
     }
 
@@ -47,49 +44,76 @@ public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
     }
 
     /// <summary>
-    /// 加载UIPanel的预制体资源
+    /// 加载UI面板预制体资源
     /// </summary>
-    /// <param name="assetName">要加载的UIPanel预制体资源的名字</param>
-    /// <param name="from">加载UIPanel预制体资源的方式</param>
-    /// <returns>是否成功加载UIPanel的预制体资源？</returns>
-    public bool LoadPanelPrefab(string assetName, LoadPanelPrefabFrom from)
+    /// <param name="panelName">要加载的UI面板预制体的名字</param>
+    /// <param name="from">加载UI面板预制体的模式</param>
+    /// <returns>加载是否成功？</returns>
+    public bool LoadPanelPrefab(string panelName, LoadPanelPrefabFrom from)
     {
-        if (!loadedPanelPrefab.ContainsKey(assetName))
+        if (!loadedPanelPrefab.ContainsKey(panelName))
         {
             GameObject asset = null;
             switch (from)
             {
                 case LoadPanelPrefabFrom.Resources:
-                    asset = Resources.Load<GameObject>(assetName);
+                    asset = Resources.Load<GameObject>($"Prefabs/UI/{panelName}");
                     break;
                 case LoadPanelPrefabFrom.AssetBundle:
-                    asset = AssetManager.Instance.LoadUIPrefab(assetName);
+                    asset = AssetManager.Instance.LoadUIPrefab(panelName);
                     break;
             }
 
-            if (asset != null)
+            bool isSucceed = !(asset == null);
+            if (isSucceed)
             {
-                loadedPanelPrefab.Add(assetName, asset);
-                return true;
+                loadedPanelPrefab.Add(panelName, asset);
             }
-            else
-            {
-                Debug.LogError($"Unable to load UI Panel prefab asset named as \"{assetName}\", from {from.ToString()}.");
-                return false;
-            }
+            return isSucceed;
         }
-
         return true;
     }
 
-    public void PreloadPanelPrefab(string assetName, LoadPanelPrefabFrom from)
+    /// <summary>
+    /// 异步加载UI面板预制体资源
+    /// </summary>
+    /// <param name="panelName">要加载的UI面板预制体的名字</param>
+    /// <param name="from">加载UI面板预制体的模式</param>
+    /// <param name="callback">加载请求结束后的回调方法，返回值代表 加载是否成功？</param>
+    public void LoadPanelPrefabAsync(string panelName, LoadPanelPrefabFrom from, UnityAction<bool> callback = null)
     {
-        if (!loadedPanelPrefab.ContainsKey(assetName))
+        if (loadedPanelPrefab.ContainsKey(panelName))
         {
-            AssetManager.Instance.LoadUIPrefabAsync(assetName, (prefab) =>
-            {
-                loadedPanelPrefab.Add(assetName, prefab);
-            });
+            callback?.Invoke(true);
+            return;
+        }
+
+        switch (from)
+        {
+            case LoadPanelPrefabFrom.Resources:
+                var request = Resources.LoadAsync<GameObject>($"Prefabs/UI/{panelName}");
+                request.completed += (operation) =>
+                {
+                    bool isSucceed = !(request.asset == null);
+                    if (isSucceed)
+                    {
+                        loadedPanelPrefab.Add(panelName, request.asset as GameObject);
+                    }
+                    callback?.Invoke(isSucceed);
+                };
+                break;
+
+            case LoadPanelPrefabFrom.AssetBundle:
+                AssetManager.Instance.LoadUIPrefabAsync(panelName, (prefab) =>
+                {
+                    bool isSucceed = !(prefab == null);
+                    if (isSucceed)
+                    {
+                        loadedPanelPrefab.Add(panelName, prefab);
+                    }
+                    callback?.Invoke(isSucceed);
+                });
+                break;
         }
     }
     #endregion

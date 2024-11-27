@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 /// <summary>
 /// 用户设置
@@ -37,7 +39,7 @@ public class UserSettings
     /// </summary>
     public static string FileStoragePath
     {
-        get => System.IO.Path.Combine(Application.persistentDataPath, "user_settings.json");
+        get => Path.Combine(Application.persistentDataPath, "user_settings.json");
     }
 
     /// <summary>
@@ -96,6 +98,14 @@ public class UserSettings
     #endregion
 
     #region Public 方法
+    /// <summary>
+    /// 将设置项值以文件保存到本地
+    /// </summary>
+    public static void SaveToFile()
+    {
+        File.WriteAllText(FileStoragePath, JsonConvert.SerializeObject(_instance));
+    }
+
     public static void SetInstance(UserSettings instance)
     {
         if (instance != null && !ReferenceEquals(_instance, instance))

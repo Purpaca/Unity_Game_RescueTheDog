@@ -21,5 +21,9 @@ namespace UIManagement
             }
         }
         #endregion
+
+        protected virtual void Awake()
+        {
+        }
     }
 }

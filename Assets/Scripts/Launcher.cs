@@ -48,16 +48,17 @@ public sealed class Launcher : MonoBehaviour
         catch (System.Exception exception)
         {
             Debug.LogException(exception);
+            UserSettings.SetInstance(new UserSettings());
+            UserSettings.SaveToFile();
         }
 
         Application.quitting += () =>
         {
-            File.WriteAllText(UserSettings.FileStoragePath, JsonConvert.SerializeObject(UserSettings.Instance));
+            UserSettings.SaveToFile();
         };
         #endregion
         
         //创建资源检查器
-
 
         #endregion
 

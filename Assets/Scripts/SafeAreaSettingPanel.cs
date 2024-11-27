@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UIManagement;
 
-public class SafeAreaPanel : Panel
+/// <summary>
+/// 屏幕安全区设置UI面板
+/// </summary>
+public class SafeAreaSettingPanel : Panel
 {
     [SerializeField]
     private RectTransform m_marker;
@@ -18,8 +21,10 @@ public class SafeAreaPanel : Panel
     Button m_buttonConfirm;
 
     #region Unity 消息
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         var rectTransform = GetComponent<RectTransform>();
         m_sliderUp.onValueChanged.AddListener((value) =>
         {
