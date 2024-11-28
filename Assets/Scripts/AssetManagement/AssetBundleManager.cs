@@ -43,7 +43,6 @@ namespace AssetManagement
         #endregion
 
         #region Public 方法
-
         /// <summary>
         /// 从给定名称的AssetBundle中加载给定名称的资源
         /// </summary>

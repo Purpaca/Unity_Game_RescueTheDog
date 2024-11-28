@@ -60,7 +60,7 @@ public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
                     asset = Resources.Load<GameObject>($"Prefabs/UI/{panelName}");
                     break;
                 case LoadPanelPrefabFrom.AssetBundle:
-                    asset = AssetManager.Instance.LoadUIPrefab(panelName);
+                    asset = AssetManager.LoadUIPrefab(panelName);
                     break;
             }
 
@@ -104,7 +104,7 @@ public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
                 break;
 
             case LoadPanelPrefabFrom.AssetBundle:
-                AssetManager.Instance.LoadUIPrefabAsync(panelName, (prefab) =>
+                AssetManager.LoadUIPrefabAsync(panelName, (prefab) =>
                 {
                     bool isSucceed = !(prefab == null);
                     if (isSucceed)

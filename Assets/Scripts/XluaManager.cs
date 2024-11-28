@@ -43,7 +43,7 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
         // 添加基础自定义Loader - 从 AssetBundle 中加载
         luaEnv.AddLoader((ref string path) =>
         {
-            var asset = AssetManager.Instance.LoadLuaScript(path);
+            var asset = AssetManager.LoadLuaScript(path);
             return asset.bytes;
         });
     }
