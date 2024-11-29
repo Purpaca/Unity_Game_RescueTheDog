@@ -1,16 +1,14 @@
 using Singleton;
+using UnityEngine;
 using XLua;
+using IEnumerator = System.Collections.IEnumerator;
 
 public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
 {
     private LuaEnv luaEnv;
+    private float gcDuration = 60.0f;
 
     #region 属性
-    public static LuaEnv LuaEnv
-    {
-        get => instance.luaEnv;
-    }
-
     public static LuaTable Global 
     {
         get => instance.luaEnv.Global;
@@ -32,6 +30,22 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
     {
         return instance.luaEnv.DoString(chunk, chunkName, env);
     }
+
+    public static LuaTable NewTable()
+    {
+        return instance.luaEnv.NewTable();
+    }
+    #endregion
+
+    #region Private 方法
+    private IEnumerator GCWatcher()
+    {
+        while (true)
+        {
+            luaEnv.GC();
+            yield return new WaitForSecondsRealtime(gcDuration);
+        }
+    }
     #endregion
 
     #region Unity 消息
@@ -46,6 +60,8 @@ public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
             var asset = AssetManager.LoadLuaScript(path);
             return asset.bytes;
         });
+
+        StartCoroutine(GCWatcher());
     }
 
     private void Update()

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using EventSystem = UnityEngine.EventSystems.EventSystem;
 using Singleton;
 using UIManagement;
+using EventSystem = UnityEngine.EventSystems.EventSystem;
 
 /// <summary>
 /// UI管理器-负责层级和UI栈的管理
@@ -39,7 +39,15 @@ public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
     {
         if(LoadPanelPrefab(panelName, from))
         {
-            var panel = Instantiate(loadedPanelPrefab[panelName]).GetComponent<Panel>();
+            GameObject panelObj = Instantiate(loadedPanelPrefab[panelName]);
+            Panel panel = panelObj.GetComponent<Panel>();
+
+            if(panel == null)
+            {
+                Debug.LogError($"");
+                Destroy(panelObj);
+                return;
+            }
         }
     }
 
