@@ -3,9 +3,9 @@ using UnityEngine;
 namespace Singleton
 {
     /// <summary>
-    /// 在被尝试访问时会自动实例化的单例模式下的MonoBehaviour基类
+    /// 在被访问时会自动实例化的单例MonoBehaviour基类
     /// </summary>
-    public class AutomaticSingletonMonoBehaviour<T> : MonoBehaviour where T : AutomaticSingletonMonoBehaviour<T>
+    public abstract class AutoInstantiateMonoSingleton<T> : MonoBehaviour where T : AutoInstantiateMonoSingleton<T>
     {
         private static T m_instance;
 
@@ -13,7 +13,7 @@ namespace Singleton
         {
             get
             {
-                if (m_instance is null)
+                if (m_instance == null)
                 {
                     GameObject gameObject = new GameObject(typeof(T).Name);
                     m_instance = gameObject.AddComponent<T>();
@@ -26,8 +26,9 @@ namespace Singleton
         #region Unity 消息
         protected virtual void Awake()
         {
-            if (m_instance != null && !object.ReferenceEquals(m_instance, this))
+            if (m_instance != null && !ReferenceEquals(m_instance, this))
             {
+                Debug.LogError($"Component \"{typeof(T).FullName}\" on gameobject \"{gameObject.name}\" is designed as a singleton script component, and the unique instance already exists. This instance would be destroyed.");
                 Destroy(this);
                 return;
             }

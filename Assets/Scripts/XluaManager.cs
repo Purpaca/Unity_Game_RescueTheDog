@@ -3,7 +3,7 @@ using UnityEngine;
 using XLua;
 using IEnumerator = System.Collections.IEnumerator;
 
-public class XluaManager : AutomaticSingletonMonoBehaviour<XluaManager>
+public class XluaManager : AutoInstantiateMonoSingleton<XluaManager>
 {
     private LuaEnv luaEnv;
     private float gcDuration = 60.0f;

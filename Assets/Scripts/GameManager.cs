@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Singleton;
 
-public class GameManager : SingletonMonoBehaviour<GameManager>
+public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField]
     private LineDrawer lineDrawer;

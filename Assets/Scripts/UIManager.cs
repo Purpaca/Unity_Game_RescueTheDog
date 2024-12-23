@@ -8,7 +8,7 @@ using EventSystem = UnityEngine.EventSystems.EventSystem;
 /// <summary>
 /// UI管理器-负责层级和UI栈的管理
 /// </summary>
-public class UIManager : AutomaticSingletonMonoBehaviour<UIManager>
+public class UIManager : AutoInstantiateMonoSingleton<UIManager>
 {
     private List<Panel> existPanels;
     private Dictionary<string, GameObject> loadedPanelPrefab;

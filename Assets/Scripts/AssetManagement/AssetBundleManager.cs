@@ -12,7 +12,7 @@ namespace AssetManagement
     /// <summary>
     /// AssetBundle管理器
     /// </summary>
-    public class AssetBundleManager : AutomaticSingletonMonoBehaviour<AssetBundleManager>
+    public class AssetBundleManager : AutoInstantiateMonoSingleton<AssetBundleManager>
     {
         private AssetBundle mainBundle;
         private AssetBundleManifest mainManifest;
