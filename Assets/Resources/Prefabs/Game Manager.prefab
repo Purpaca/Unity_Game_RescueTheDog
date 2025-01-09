@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14854fcd01e91f54b890c5289e020683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineDrawer: {fileID: 8470678429657531171}
+  m_lineDrawer: {fileID: 8470678429657531171}
 --- !u!1001 &337314304756257
 PrefabInstance:
   m_ObjectHideFlags: 0

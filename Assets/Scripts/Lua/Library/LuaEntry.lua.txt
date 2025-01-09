@@ -1,0 +1,8 @@
+local module =
+{
+
+}
+
+for index, value in ipairs(module) do
+    require(value)
+end
