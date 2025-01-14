@@ -114,6 +114,7 @@ public class BeeController : DogKillingCapable
 
     private void Awake()
     {
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_rigidbody = GetComponent<Rigidbody2D>();
     }
 

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/RescueTheDog/Scenes/Game.unity
+    path: Assets/Scenes/Game.unity
     guid: 56d15944feb8bb949b3217ef5007783e
   m_configObjects: {}

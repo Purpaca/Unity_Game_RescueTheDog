@@ -35,7 +35,7 @@ public class LevelConfig : ScriptableObject
     /// <summary>
     /// 关卡的地形预制体
     /// </summary>
-    public GameObject Terrain { get => Terrain; }
+    public GameObject Terrain { get => terrain; }
 
     /// <summary>
     /// 关卡所有的狗头信息

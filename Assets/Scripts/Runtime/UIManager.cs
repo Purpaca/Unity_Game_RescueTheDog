@@ -9,56 +9,92 @@ using EventSystem = UnityEngine.EventSystems.EventSystem;
 /// </summary>
 public class UIManager : AutoInstantiateMonoSingleton<UIManager>
 {
+    private EventSystem m_eventSystem;
+
     private List<UIPanel> existPanels;
     private Dictionary<string, CachedPanel> cachedPanels;
-
+    
     private int order = 0;
-    private EventSystem _eventSystem;
+    private bool isOpeningPanel = false;
 
     #region 属性
     public static UIManager Instance { get => instance; }
     #endregion
 
     #region Public 方法
-    public void ShowPanel(string panelName, UnityAction callback, LoadPanelPrefabFrom from = LoadPanelPrefabFrom.AssetBundle) 
+    /// <summary>
+    /// 打开一个UI面板至顶层
+    /// </summary>
+    public void ShowPanel(string panelName, UnityAction callback = null, LoadPanelPrefabFrom from = LoadPanelPrefabFrom.AssetBundle)
     {
-        if (!cachedPanels.ContainsKey(panelName)) 
+        if (isOpeningPanel)
         {
-            
+            Debug.Log("当前有一个UI面板正在打开中，暂时无法打开新的UI面板.");
+            return;
         }
 
-        
-        cachedPanels[panelName].panel.Canvas.sortingOrder = order;
-        order++;
+        isOpeningPanel = true;
+        PreloadPanel(panelName, from, (isPanelPreloaded) =>
+        {
+            if (!isPanelPreloaded)
+            {
+                Debug.LogError($"无法打开UI面板\"{panelName}\"");
+                isOpeningPanel = false;
+            }
+
+            cachedPanels[panelName].panel.Canvas.sortingOrder = order;
+            
+            order++;
+            isOpeningPanel = false;
+        });
     }
 
     /// <summary>
-    /// 异步加载UI面板预制体资源
+    /// 关闭最顶层的UI面板
+    /// </summary>
+    public void CloseTopPanel() 
+    {
+
+    }
+
+    /// <summary>
+    /// 预加载指定的UI面板
     /// </summary>
     /// <param name="panelName">要加载的UI面板预制体的名字</param>
     /// <param name="from">加载UI面板预制体的模式</param>
-    public void PreloadPanel(string panelName, LoadPanelPrefabFrom from = LoadPanelPrefabFrom.AssetBundle) 
+    /// <param name="callback">当预加载请求结束后的回调方法</param>
+    public void PreloadPanel(string panelName, LoadPanelPrefabFrom from = LoadPanelPrefabFrom.AssetBundle, UnityAction<bool> callback = null)
     {
-        LoadPanelPrefabAsync(panelName, from, (prefab) => 
+        if (cachedPanels.ContainsKey(panelName))
         {
-            if (prefab == null) 
+            callback?.Invoke(true);
+            return;
+        }
+
+        LoadPanelPrefabAsync(panelName, from, (prefab) =>
+        {
+            if (prefab == null)
             {
                 Debug.LogError($"无法从{from.ToString()}加载名为\"{panelName}\"的UI预制体资源！");
+                callback?.Invoke(false);
                 return;
             }
 
             var go = Instantiate(prefab);
             UIPanel panel = go.GetComponent<UIPanel>();
-            
-            if(panel == null) 
+
+            if (panel == null)
             {
                 Destroy(go);
                 Debug.LogError($"从{from.ToString()}加载的名为\"{panelName}\"的预制体资源不是一个标准的UIPanel预制体！请为其挂载UIPanel脚本组件。");
+                callback?.Invoke(false);
                 return;
             }
 
+            go.SetActive(false);
             CachedPanel cachedPanel = new() { key = panelName, panel = panel };
             cachedPanels.Add(panelName, cachedPanel);
+            callback?.Invoke(true);
         });
     }
     #endregion
@@ -102,13 +138,13 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
 
         if (EventSystem.current != null)
         {
-            _eventSystem = EventSystem.current;
+            m_eventSystem = EventSystem.current;
             EventSystem.current.transform.SetParent(transform, false);
         }
         else
         {
-            _eventSystem = Instantiate(Resources.Load<GameObject>("Prefabs/EventSystem")).GetComponent<EventSystem>();
-            _eventSystem.transform.SetParent(transform, false);
+            m_eventSystem = Instantiate(Resources.Load<GameObject>("Prefabs/EventSystem")).GetComponent<EventSystem>();
+            m_eventSystem.transform.SetParent(transform, false);
         }
     }
     #endregion

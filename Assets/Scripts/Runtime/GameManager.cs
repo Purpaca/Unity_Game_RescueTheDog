@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Purpaca;
 using Singleton;
+using IEnumerator = System.Collections.IEnumerator;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -10,8 +12,15 @@ public class GameManager : MonoSingleton<GameManager>
     private UserSettingsData m_userSettingData;
     private UserProgressData m_userProgressData;
 
+    private string[] m_musicList;
+    private int _musicID;
+    private string _musicHandle;
+
     private GameObject _dogPrefabAsset;
     private GameObject _combPrefabAsset;
+
+    private bool isGameFailed = false;
+    private Coroutine _gameProcess;
 
     private LevelConfig _levelConfig;
     private GameObject _currentTerrain;
@@ -65,13 +74,47 @@ public class GameManager : MonoSingleton<GameManager>
 
     #region Public 方法
     /// <summary>
+    /// 随机播放BGM
+    /// </summary>
+    public void PlayMusic()
+    {
+        if (!string.IsNullOrEmpty(_musicHandle))
+        {
+            AudioManager.Free(_musicHandle);
+        }
+
+        _musicID = (_musicID + Random.Range(1, 2)) % m_musicList.Length;
+        AudioClip clip = AssetManager.LoadMusic(m_musicList[_musicID]);
+        _musicHandle = AudioManager.Play(clip, -1, 1.0f, AudioManager.OutputChannel.Music);
+    }
+
+    /// <summary>
+    /// 停止随机播放的BGM
+    /// </summary>
+    public void StopMusic()
+    {
+        if (!string.IsNullOrEmpty(_musicHandle))
+        {
+            AudioManager.Free(_musicHandle);
+        }
+        _musicHandle = string.Empty;
+    }
+
+    /// <summary>
     /// 开始游戏
     /// </summary>
-    public void StartGame() 
+    public void StartGame(LevelConfig levelConfig) 
     {
+        isGameFailed = false;
         ClearLevel();
-        BuildLevel(_levelConfig);
+        BuildLevel(levelConfig);
         m_lineDrawer.enabled = true;
+
+        if(_gameProcess != null) 
+        {
+            StopCoroutine(_gameProcess);
+        }
+        _gameProcess = StartCoroutine(GameProcess());
     }
     #endregion
 
@@ -89,6 +132,12 @@ public class GameManager : MonoSingleton<GameManager>
             DogController dog = Instantiate(_dogPrefabAsset).GetComponent<DogController>();
             dog.transform.position = new Vector3(dogInfo.Position.x, dogInfo.Position.y, -2.0f);
             dog.SetDogeSimulated(false);
+
+            dog.AddOnDogeInjuredListener(() =>
+            {
+
+            });
+
             _spawnedDogs.Add(dog);
         }
 
@@ -157,11 +206,41 @@ public class GameManager : MonoSingleton<GameManager>
     }
     #endregion
 
+    #region 协程
+    private IEnumerator GameProcess() 
+    {
+        float timer = 10.0f;
+        while (!isGameFailed) 
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("赢了家人们");
+                StopCoroutine(_gameProcess);
+            }
+
+            yield return null;
+        }
+
+        Debug.Log("输了家人们");
+    }
+    #endregion
+
     #region Unity 消息
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+
+        m_musicList = AssetManager.LoadMusicList();
+        _musicID = Random.Range(0, m_musicList.Length - 1);
+
+        // 这里先用Magic string吧...等以后有机会实现换装功能再优化
+        _dogPrefabAsset = AssetManager.LoadDogPrefab("dog_vanilla");
+        _combPrefabAsset = AssetManager.LoadCombPrefab("comb_vanilla");
 
         m_lineDrawer.enabled = false;
         _spawnedDogs = new List<DogController>();

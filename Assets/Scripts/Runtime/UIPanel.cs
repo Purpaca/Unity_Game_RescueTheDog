@@ -70,6 +70,8 @@ public abstract class UIPanel : MonoBehaviour
         }
     }
 
+    public virtual void OnShow() { }
+    public virtual void OnClose() { }
     public virtual void OnFreeze() { }
     public virtual void OnUnfreeze() { }
     #endregion
