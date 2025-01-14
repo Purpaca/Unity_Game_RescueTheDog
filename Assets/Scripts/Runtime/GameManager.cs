@@ -35,6 +35,24 @@ public class GameManager : MonoSingleton<GameManager>
     public static GameManager Instance { get => instance; }
 
     /// <summary>
+    /// 音乐的播放音量
+    /// </summary>
+    public static float MusicVolume 
+    {
+        get => AudioManager.MusicVolume;
+        set => AudioManager.MusicVolume = value;
+    }
+
+    /// <summary>
+    /// 音效的播放音量
+    /// </summary>
+    public static float SoundVolume 
+    {
+        get => AudioManager.SoundVolume;
+        set => AudioManager.SoundVolume = value;
+    }
+
+    /// <summary>
     /// 当前持有的线绘制器
     /// </summary>
     public LineDrawer LineDrawer { get => m_lineDrawer; }

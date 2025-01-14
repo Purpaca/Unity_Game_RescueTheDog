@@ -49,6 +49,11 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
         });
     }
 
+    public void Close(UIPanel panel) 
+    {
+
+    }
+
     /// <summary>
     /// 关闭最顶层的UI面板
     /// </summary>

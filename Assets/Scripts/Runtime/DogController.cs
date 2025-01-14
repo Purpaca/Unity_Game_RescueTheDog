@@ -63,9 +63,11 @@ public class DogController : MonoBehaviour
     {
         if (m_animator == null || !Enum.IsDefined(typeof(DogAnimationState), state))
         {
+            Debug.Log("DDD");
             return;
         }
 
+        Debug.Log(Enum.GetName(typeof(DogAnimationState), state));
         m_animator.SetTrigger(Enum.GetName(typeof(DogAnimationState), state));
     }
 
