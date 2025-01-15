@@ -13,6 +13,7 @@ public class DogController : MonoBehaviour
 
     private UnityAction m_onDogeInjured;
     private bool _isDead = false;
+    private string _previousAnimationState = Enum.GetName(typeof(DogAnimationState),DogAnimationState.Idle);
 
     public bool IsAlive { get => !_isDead; }
 
@@ -63,12 +64,14 @@ public class DogController : MonoBehaviour
     {
         if (m_animator == null || !Enum.IsDefined(typeof(DogAnimationState), state))
         {
-            Debug.Log("DDD");
             return;
         }
 
-        Debug.Log(Enum.GetName(typeof(DogAnimationState), state));
-        m_animator.SetTrigger(Enum.GetName(typeof(DogAnimationState), state));
+        // 确保即使AnyState到动画状态的过渡被设置为不可过渡到自身，上一次的动画播放Trigger也能复位
+        m_animator.ResetTrigger(_previousAnimationState);
+        string newState = Enum.GetName(typeof(DogAnimationState), state);
+        m_animator.SetTrigger(newState);
+        _previousAnimationState = newState;
     }
 
     /// <summary>
