@@ -74,11 +74,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.assetbundlebrowser": {
-      "version": "1.7.0",
+      "version": "file:com.unity.assetbundlebrowser@1.7.0",
       "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.burst": {
       "version": "1.8.12",
