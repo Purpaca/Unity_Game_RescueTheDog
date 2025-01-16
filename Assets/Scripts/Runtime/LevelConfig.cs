@@ -4,7 +4,6 @@ using System.Collections.Generic;
 /// <summary>
 /// 关卡配置
 /// </summary>
-[CreateAssetMenu(menuName ="Create Level Config", fileName ="New GameLevel")]
 public class LevelConfig : ScriptableObject
 {
     /// <summary>

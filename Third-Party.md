@@ -12,8 +12,9 @@
 
   |资源文件|类型|来源|
   |:-:|:-:|:-:|
-  |Assets/Artistic/Fonts/misans.ttf|字体|[MiSans](https://hyperos.mi.com/font/zh/)|
-  |Assets/Artistic/Audio/mus_bgm_music1.ogg  Assets/Artistic/Audio/mus_bgm_music2.ogg  Assets/Artistic/Audio/mus_bgm_music3.ogg|音频|剪辑自 音乐专辑  **TVアニメ『この素晴らしい世界に祝福を! 2』サントラ&ドラマCD Vol.3「受難の日々に福音を! 」**|
+  |Assets\RescueTheDog\Fonts\misans.ttf|字体|[MiSans](https://hyperos.mi.com/font/zh/)|
+  |Assets\RescueTheDog\Fonts\AaFengKuangYuanShiRen-2.ttf|字体|[Aa疯狂原始人](https://www.aafont.com.cn/detail.html?fontId=R3iXKhxy)|
+  |Assets\RescueTheDog\Audio\mus_bgm_music1.ogg  Assets\RescueTheDog\Audio\Audio/mus_bgm_music2.ogg  Assets\RescueTheDog\Audio\mus_bgm_music3.ogg|音频|剪辑自 音乐专辑  **TVアニメ『この素晴らしい世界に祝福を! 2』サントラ&ドラマCD Vol.3「受難の日々に福音を! 」**|
 
 - 使用的第三方库或工具
   - [**Xlua**](https://github.com/Tencent/xLua)

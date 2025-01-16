@@ -22,9 +22,9 @@ namespace AssetBundleBrowser
         [SerializeField]
         private Vector2 m_ScrollPosition;
 
-        // ¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚ¿ØÖÆÊÇ·ñÔÚ¹¹½¨AB°üºóÇå³ımanifestÎÄ¼ş
+        // é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºæ§åˆ¶æ˜¯å¦åœ¨æ„å»ºABåŒ…åæ¸…é™¤manifestæ–‡ä»¶
         internal static bool doCleanManifest = true;
-        // ¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚ¿ØÖÆÊÇ·ñÔÚ¹¹½¨AB°üºóÇå³ımanifestÎÄ¼ş
+        // é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºæ§åˆ¶æ˜¯å¦åœ¨æ„å»ºABåŒ…åæ¸…é™¤manifestæ–‡ä»¶
 
         class ToggleData
         {
@@ -132,7 +132,7 @@ namespace AssetBundleBrowser
                 "Ignore the type tree changes when doing the incremental build check.",
                 m_UserData.m_OnToggles,
                 BuildAssetBundleOptions.IgnoreTypeTreeChanges));
-            /* ¶îÍâĞŞ¸ÄµÄ´úÂë£¬ÒòÎªÎÒÃÇĞèÒªÒÀÍĞÉú³ÉµÄAB°üÎÄ¼şÃûÀ´¸ü¸ÄÖ÷°üµÄÎÄ¼şÃû£¬ËùÓĞ½ûÖ¹½«hashÌí¼Óµ½ab°üÎÄ¼şÃûÉÏ
+            /* é¢å¤–ä¿®æ”¹çš„ä»£ç ï¼Œå› ä¸ºæˆ‘ä»¬éœ€è¦ä¾æ‰˜ç”Ÿæˆçš„ABåŒ…æ–‡ä»¶åæ¥æ›´æ”¹ä¸»åŒ…çš„æ–‡ä»¶åï¼Œæ‰€æœ‰ç¦æ­¢å°†hashæ·»åŠ åˆ°abåŒ…æ–‡ä»¶åä¸Š
             m_ToggleData.Add(new ToggleData(
                 false,
                 "Append Hash",
@@ -180,9 +180,9 @@ namespace AssetBundleBrowser
             bool newState = false;
             var centeredStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
             centeredStyle.alignment = TextAnchor.UpperCenter;
-            GUILayout.Label(new GUIContent("Example build setup"), centeredStyle);
+            //GUILayout.Label(new GUIContent("Example build setup"), centeredStyle);
             //basic options
-            EditorGUILayout.Space();
+            EditorGUILayout.Space(10);
             GUILayout.BeginVertical();
 
             // build target
@@ -286,10 +286,10 @@ namespace AssetBundleBrowser
                 }
             }
 
-            // ¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚ¿ØÖÆÊÇ·ñÔÚ¹¹½¨AB°üºóÇå³ımanifestÎÄ¼ş
+            // é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºæ§åˆ¶æ˜¯å¦åœ¨æ„å»ºABåŒ…åæ¸…é™¤manifestæ–‡ä»¶
             EditorGUILayout.Space();
-            doCleanManifest = GUILayout.Toggle(doCleanManifest, "ÇåÀí Manifest ÎÄ¼ş");
-            // ¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚ¿ØÖÆÊÇ·ñÔÚ¹¹½¨AB°üºóÇå³ımanifestÎÄ¼ş
+            doCleanManifest = GUILayout.Toggle(doCleanManifest, "æ¸…ç† Manifest æ–‡ä»¶");
+            // é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºæ§åˆ¶æ˜¯å¦åœ¨æ„å»ºABåŒ…åæ¸…é™¤manifestæ–‡ä»¶
 
             // build.
             EditorGUILayout.Space();
@@ -370,7 +370,7 @@ namespace AssetBundleBrowser
 
             AssetBundleModel.Model.DataSource.BuildAssetBundles(buildInfo);
 
-            /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚĞŞ¸Ä¹¹½¨³öµÄAssetBundleµÄÖ÷°üÎÄ¼şÃûÎª¡°AssetBundle¡±£¬¶ø²»ÊÇÄ¬ÈÏµÄBuildTargetÃû³Æ*/
+            /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºä¿®æ”¹æ„å»ºå‡ºçš„AssetBundleçš„ä¸»åŒ…æ–‡ä»¶åä¸ºâ€œAssetBundleâ€ï¼Œè€Œä¸æ˜¯é»˜è®¤çš„BuildTargetåç§°*/
             foreach (var filePath in Directory.GetFiles(m_UserData.m_OutputPath))
             {
                 if (filePath.EndsWith(".manifest"))
@@ -393,14 +393,14 @@ namespace AssetBundleBrowser
                     break;
                 }
             }
-            /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚĞŞ¸Ä¹¹½¨³öµÄAssetBundleµÄÖ÷°üÎÄ¼şÃûÎª¡°AssetBundle¡±£¬¶ø²»ÊÇÄ¬ÈÏµÄBuildTargetÃû³Æ*/
+            /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºä¿®æ”¹æ„å»ºå‡ºçš„AssetBundleçš„ä¸»åŒ…æ–‡ä»¶åä¸ºâ€œAssetBundleâ€ï¼Œè€Œä¸æ˜¯é»˜è®¤çš„BuildTargetåç§°*/
 
-            /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚÉ¾³ı¹¹½¨³öÀ´µÄ¡°*.manifest¡±ÎÄ¼ş*/
+            /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºåˆ é™¤æ„å»ºå‡ºæ¥çš„â€œ*.manifestâ€æ–‡ä»¶*/
             if (doCleanManifest)
             {
                 DeleteManifest(m_UserData.m_OutputPath);
             }
-            /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚÉ¾³ı¹¹½¨³öÀ´µÄ¡°*.manifest¡±ÎÄ¼ş*/
+            /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºåˆ é™¤æ„å»ºå‡ºæ¥çš„â€œ*.manifestâ€æ–‡ä»¶*/
 
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
@@ -408,7 +408,7 @@ namespace AssetBundleBrowser
                 DirectoryCopy(m_UserData.m_OutputPath, m_streamingPath);
         }
 
-        /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚÉ¾³ı¹¹½¨³öÀ´µÄ¡°*.manifest¡±ÎÄ¼ş*/
+        /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºåˆ é™¤æ„å»ºå‡ºæ¥çš„â€œ*.manifestâ€æ–‡ä»¶*/
         private static void DeleteManifest(string path)
         {
             foreach (var filePath in Directory.GetFiles(path))
@@ -424,7 +424,7 @@ namespace AssetBundleBrowser
                 DeleteManifest(folder);
             }
         }
-        /*¶îÍâÌí¼ÓµÄ´úÂë£¬ÓÃÓÚÉ¾³ı¹¹½¨³öÀ´µÄ¡°*.manifest¡±ÎÄ¼ş*/
+        /*é¢å¤–æ·»åŠ çš„ä»£ç ï¼Œç”¨äºåˆ é™¤æ„å»ºå‡ºæ¥çš„â€œ*.manifestâ€æ–‡ä»¶*/
 
         private static void DirectoryCopy(string sourceDirName, string destDirName)
         {

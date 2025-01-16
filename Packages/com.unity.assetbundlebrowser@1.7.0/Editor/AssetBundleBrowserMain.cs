@@ -49,11 +49,12 @@ namespace AssetBundleBrowser
         const float k_ToolbarPadding = 15;
         const float k_MenubarPadding = 32;
 
-        [MenuItem("Window/AssetBundle Browser", priority = 2050)]
+        //[MenuItem("Window/AssetBundle Browser", priority = 2050)]
+        [MenuItem("Rescue the Dog/AssetBundle Builder", priority = 2050)]
         static void ShowWindow()
         {
             s_instance = null;
-            instance.titleContent = new GUIContent("AssetBundles");
+            instance.titleContent = new GUIContent("AssetBundle Builder");
             instance.Show();
         }
 
