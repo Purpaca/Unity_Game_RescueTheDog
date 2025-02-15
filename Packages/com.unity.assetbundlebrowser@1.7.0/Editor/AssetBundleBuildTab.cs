@@ -3,9 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
 using AssetBundleBrowser.AssetBundleDataSource;
-using System.Linq;
 
 namespace AssetBundleBrowser
 {
@@ -14,7 +12,7 @@ namespace AssetBundleBrowser
     {
         const string k_BuildPrefPrefix = "ABBBuild:";
 
-        private string m_streamingPath = "Assets/StreamingAssets";
+        private string m_streamingPath = "Assets/StreamingAssets/AssetBundles";
 
         [SerializeField]
         private bool m_AdvancedSettings;
@@ -25,6 +23,12 @@ namespace AssetBundleBrowser
         // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
         internal static bool doCleanManifest = true;
         // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
+
+        // 额外添加的代码，用于控制是否在构建AB包后是否自动生成资源版本清单
+        internal static bool doGenerateVersionList = true;
+        internal static bool enableCustomVersionListName = false;
+        internal static string assetVersionListName = "x.x.x.x";
+        // 额外添加的代码，用于控制是否在构建AB包后是否自动生成资源版本清单
 
         class ToggleData
         {
@@ -96,6 +100,8 @@ namespace AssetBundleBrowser
         }
         internal void OnEnable(EditorWindow parent)
         {
+            assetVersionListName = !string.IsNullOrEmpty(assetVersionListName) ? assetVersionListName : "x.x.x.x";
+
             m_InspectTab = (parent as AssetBundleBrowserMain).m_InspectTab;
 
             //LoadData...
@@ -132,7 +138,7 @@ namespace AssetBundleBrowser
                 "Ignore the type tree changes when doing the incremental build check.",
                 m_UserData.m_OnToggles,
                 BuildAssetBundleOptions.IgnoreTypeTreeChanges));
-            /* 额外修改的代码，因为我们需要依托生成的AB包文件名来更改主包的文件名，所有禁止将hash添加到ab包文件名上
+            /* 额外修改的代码，因为我们需要依托生成的AB包文件名来更改主包的文件名，所以禁止将hash添加到ab包文件名上
             m_ToggleData.Add(new ToggleData(
                 false,
                 "Append Hash",
@@ -186,12 +192,13 @@ namespace AssetBundleBrowser
             GUILayout.BeginVertical();
 
             // build target
-            using (new EditorGUI.DisabledScope (!AssetBundleModel.Model.DataSource.CanSpecifyBuildTarget)) {
+            using (new EditorGUI.DisabledScope(!AssetBundleModel.Model.DataSource.CanSpecifyBuildTarget))
+            {
                 ValidBuildTarget tgt = (ValidBuildTarget)EditorGUILayout.EnumPopup(m_TargetContent, m_UserData.m_BuildTarget);
                 if (tgt != m_UserData.m_BuildTarget)
                 {
                     m_UserData.m_BuildTarget = tgt;
-                    if(m_UserData.m_UseDefaultPath)
+                    if (m_UserData.m_UseDefaultPath)
                     {
                         m_UserData.m_OutputPath = "AssetBundles/";
                         m_UserData.m_OutputPath += m_UserData.m_BuildTarget.ToString();
@@ -202,7 +209,8 @@ namespace AssetBundleBrowser
 
 
             ////output path
-            using (new EditorGUI.DisabledScope (!AssetBundleModel.Model.DataSource.CanSpecifyBuildOutputDirectory)) {
+            using (new EditorGUI.DisabledScope(!AssetBundleModel.Model.DataSource.CanSpecifyBuildOutputDirectory))
+            {
                 EditorGUILayout.Space();
                 GUILayout.BeginHorizontal();
                 var newPath = EditorGUILayout.TextField("Output Path", m_UserData.m_OutputPath);
@@ -222,6 +230,39 @@ namespace AssetBundleBrowser
                 //if (string.IsNullOrEmpty(m_OutputPath))
                 //    m_OutputPath = EditorUserBuildSettings.GetPlatformSettings(EditorUserBuildSettings.activeBuildTarget.ToString(), "AssetBundleOutputPath");
                 GUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+
+                // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
+                EditorGUILayout.Space();
+                doCleanManifest = GUILayout.Toggle(doCleanManifest, "清理 Manifest 文件");
+                // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
+
+                // 额外添加的代码，用于控制是否在构建AB包后是否自动生成资源版本清单
+                doGenerateVersionList = GUILayout.Toggle(doGenerateVersionList, "生成资源集版本清单文件");
+
+                if (doGenerateVersionList)
+                {
+                    enableCustomVersionListName = GUILayout.Toggle(enableCustomVersionListName, "自定义资源版本名称");
+
+                    GUI.enabled = enableCustomVersionListName;
+                    EditorGUILayout.BeginHorizontal();
+                    if (doGenerateVersionList)
+                    {
+                        GUILayout.Label("自定义名称");
+                        assetVersionListName = EditorGUILayout.TextField(assetVersionListName);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    
+                    if (enableCustomVersionListName && string.IsNullOrEmpty(assetVersionListName))
+                    {
+                        EditorGUILayout.Space();
+                        EditorGUILayout.HelpBox("自定义资源版本名称不能为空", MessageType.Error);
+                        EditorGUILayout.Space();
+                    }
+                    GUI.enabled = true;
+                }
+                // 额外添加的代码，用于控制是否在构建AB包后是否自动生成资源版本清单
+
                 EditorGUILayout.Space();
 
                 newState = GUILayout.Toggle(
@@ -249,15 +290,16 @@ namespace AssetBundleBrowser
             }
 
             // advanced options
-            using (new EditorGUI.DisabledScope (!AssetBundleModel.Model.DataSource.CanSpecifyBuildOptions)) {
+            using (new EditorGUI.DisabledScope(!AssetBundleModel.Model.DataSource.CanSpecifyBuildOptions))
+            {
                 EditorGUILayout.Space();
                 m_AdvancedSettings = EditorGUILayout.Foldout(m_AdvancedSettings, "Advanced Settings");
-                if(m_AdvancedSettings)
+                if (m_AdvancedSettings)
                 {
                     var indent = EditorGUI.indentLevel;
                     EditorGUI.indentLevel = 1;
                     CompressOptions cmp = (CompressOptions)EditorGUILayout.IntPopup(
-                        m_CompressionContent, 
+                        m_CompressionContent,
                         (int)m_UserData.m_Compression,
                         m_CompressionOptions,
                         m_CompressionValues);
@@ -286,25 +328,25 @@ namespace AssetBundleBrowser
                 }
             }
 
-            // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
-            EditorGUILayout.Space();
-            doCleanManifest = GUILayout.Toggle(doCleanManifest, "清理 Manifest 文件");
-            // 额外添加的代码，用于控制是否在构建AB包后清除manifest文件
-
             // build.
             EditorGUILayout.Space();
-            if (GUILayout.Button("Build") )
+            if(doGenerateVersionList && string.IsNullOrEmpty(assetVersionListName)) 
+            {
+                GUI.enabled = false;
+            }
+            if (GUILayout.Button("Build"))
             {
                 EditorApplication.delayCall += ExecuteBuild;
             }
-
+            GUI.enabled = true;
             GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
         }
 
         private void ExecuteBuild()
         {
-            if (AssetBundleModel.Model.DataSource.CanSpecifyBuildOutputDirectory) {
+            if (AssetBundleModel.Model.DataSource.CanSpecifyBuildOutputDirectory)
+            {
                 if (string.IsNullOrEmpty(m_UserData.m_OutputPath))
                     BrowseForFolder();
 
@@ -328,8 +370,8 @@ namespace AssetBundleBrowser
                                 Directory.Delete(m_UserData.m_OutputPath, true);
 
                             if (m_CopyToStreaming.state)
-                            if (Directory.Exists(m_streamingPath))
-                                Directory.Delete(m_streamingPath, true);
+                                if (Directory.Exists(m_streamingPath))
+                                    Directory.Delete(m_streamingPath, true);
                         }
                         catch (System.Exception e)
                         {
@@ -343,7 +385,8 @@ namespace AssetBundleBrowser
 
             BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
 
-            if (AssetBundleModel.Model.DataSource.CanSpecifyBuildOptions) {
+            if (AssetBundleModel.Model.DataSource.CanSpecifyBuildOptions)
+            {
                 if (m_UserData.m_Compression == CompressOptions.Uncompressed)
                     opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
                 else if (m_UserData.m_Compression == CompressOptions.ChunkBasedCompression)
@@ -379,10 +422,10 @@ namespace AssetBundleBrowser
                 }
 
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
-                if (fileName == (m_UserData.m_BuildTarget.ToString())) 
+                if (fileName == (m_UserData.m_BuildTarget.ToString()))
                 {
                     string newPath = Path.Combine(m_UserData.m_OutputPath, "AssetBundle");
-                    if (File.Exists(newPath)) 
+                    if (File.Exists(newPath))
                     {
                         File.Delete(newPath);
                     }
@@ -395,6 +438,19 @@ namespace AssetBundleBrowser
             }
             /*额外添加的代码，用于修改构建出的AssetBundle的主包文件名为“AssetBundle”，而不是默认的BuildTarget名称*/
 
+            /*额外添加的代码，用于生成资源版本清单文件*/
+            if (doGenerateVersionList && !string.IsNullOrEmpty(assetVersionListName))
+            {
+                List<Purpaca.AssetManagement.Version.AssetInfo> assets = new();
+
+                CollectAssetInfos(m_UserData.m_OutputPath, m_UserData.m_OutputPath, ref assets);
+
+                string versionName = enableCustomVersionListName ? assetVersionListName : GUID.Generate().ToString().Replace("-", "");
+                Purpaca.AssetManagement.Version.AssetVersion assetVersion = new(versionName, assets.ToArray());
+                Purpaca.AssetManagement.Version.Utils.CreateListFile(assetVersion, m_UserData.m_OutputPath);
+            }
+            /*额外添加的代码，用于生成资源版本清单文件*/
+
             /*额外添加的代码，用于删除构建出来的“*.manifest”文件*/
             if (doCleanManifest)
             {
@@ -402,11 +458,37 @@ namespace AssetBundleBrowser
             }
             /*额外添加的代码，用于删除构建出来的“*.manifest”文件*/
 
-                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
-            if(m_CopyToStreaming.state)
+            if (m_CopyToStreaming.state)
                 DirectoryCopy(m_UserData.m_OutputPath, m_streamingPath);
+
+            EditorUtility.RevealInFinder(m_UserData.m_OutputPath);
         }
+
+        /*额外添加的代码，用于生成资源版本清单文件*/
+        private static void CollectAssetInfos(string root, string current, ref List<Purpaca.AssetManagement.Version.AssetInfo> collector) 
+        {
+            foreach (var filePath in Directory.GetFiles(current))
+            {
+                if (filePath.EndsWith(".manifest") || filePath.EndsWith("json"))
+                {
+                    continue;
+                }
+
+                string name = Path.GetRelativePath(root, filePath).Replace("\\","/");
+                string md5 = Purpaca.AssetManagement.Version.Utils.GetMD5(File.ReadAllBytes(filePath));
+                FileInfo file = new FileInfo(filePath);
+                Purpaca.AssetManagement.Version.AssetInfo assetInfo = new(name, md5, file.Length);
+                collector.Add(assetInfo);
+            }
+
+            foreach (var subPath in Directory.GetDirectories(current))
+            {
+                CollectAssetInfos(root, subPath, ref collector);
+            }
+        }
+        /*额外添加的代码，用于生成资源版本清单文件*/
 
         /*额外添加的代码，用于删除构建出来的“*.manifest”文件*/
         private static void DeleteManifest(string path)
