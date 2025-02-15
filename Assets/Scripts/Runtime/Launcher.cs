@@ -47,9 +47,12 @@ public sealed class Launcher : MonoBehaviour
             yield return null;
         }
 
+        /*
         LevelConfig conf = AssetManager.LoadLevelConfig("level_tutorial");
         manager.StartGame(conf);
+        */
         manager.PlayMusic();
+        UIManager.Instance.ShowPanel("SettingsPanel");
 
         Destroy(splash.gameObject);
         Destroy(gameObject);

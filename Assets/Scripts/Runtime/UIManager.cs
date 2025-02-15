@@ -9,6 +9,8 @@ using EventSystem = UnityEngine.EventSystems.EventSystem;
 /// </summary>
 public class UIManager : AutoInstantiateMonoSingleton<UIManager>
 {
+    private Transform m_showedPanelGroup;
+    private Transform m_cachedGroup;
     private EventSystem m_eventSystem;
 
     private List<UIPanel> existPanels;
@@ -29,37 +31,30 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
     {
         if (isOpeningPanel)
         {
-            Debug.Log("当前有一个UI面板正在打开中，暂时无法打开新的UI面板.");
+            Debug.LogError("There is currently a UIPanel openning in progress, cannot open other UIPanels during this period!");
             return;
         }
 
         isOpeningPanel = true;
-        PreloadPanel(panelName, from, (isPanelPreloaded) =>
+        PreloadPanel(panelName, from, (isSuccess) =>
         {
-            if (!isPanelPreloaded)
+            if (!isSuccess)
             {
                 Debug.LogError($"无法打开UI面板\"{panelName}\"");
                 isOpeningPanel = false;
             }
 
-            cachedPanels[panelName].panel.Canvas.sortingOrder = order;
+            UIPanel panel = cachedPanels[panelName].Panel;
+            cachedPanels.Remove(panelName);
+
+            panel.Canvas.sortingOrder = order;
+            panel.gameObject.SetActive(true);
+            panel.transform.SetParent(m_showedPanelGroup);
+            panel.OnShow();
             
             order++;
             isOpeningPanel = false;
         });
-    }
-
-    public void Close(UIPanel panel) 
-    {
-
-    }
-
-    /// <summary>
-    /// 关闭最顶层的UI面板
-    /// </summary>
-    public void CloseTopPanel() 
-    {
-
     }
 
     /// <summary>
@@ -72,6 +67,7 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
     {
         if (cachedPanels.ContainsKey(panelName))
         {
+            cachedPanels[panelName].IncreaseRefCount();
             callback?.Invoke(true);
             return;
         }
@@ -80,7 +76,7 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
         {
             if (prefab == null)
             {
-                Debug.LogError($"无法从{from.ToString()}加载名为\"{panelName}\"的UI预制体资源！");
+                Debug.LogError($"Can not load UIPanel prefab asset named \"{panelName}\" from {from.ToString()}");
                 callback?.Invoke(false);
                 return;
             }
@@ -91,16 +87,31 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
             if (panel == null)
             {
                 Destroy(go);
-                Debug.LogError($"从{from.ToString()}加载的名为\"{panelName}\"的预制体资源不是一个标准的UIPanel预制体！请为其挂载UIPanel脚本组件。");
+                Debug.LogError($"Loaded asset \"{panelName}\" from {from.ToString()} is not a standard UIPanel prefab asset, please attach a UIPanel Component to it!");
                 callback?.Invoke(false);
                 return;
             }
 
             go.SetActive(false);
-            CachedPanel cachedPanel = new() { key = panelName, panel = panel };
+            go.transform.SetParent(m_cachedGroup);
+            CachedPanel cachedPanel = new CachedPanel(panel, panelName);
             cachedPanels.Add(panelName, cachedPanel);
             callback?.Invoke(true);
         });
+    }
+
+    /// <summary>
+    /// 卸载缓存的UI面板
+    /// </summary>
+    /// <param name="panelName">要卸载的UI面板名称</param>
+    public void UnloadPanel(string panelName)
+    {
+        if (!cachedPanels.ContainsKey(panelName))
+        {
+            return;
+        }
+
+        cachedPanels[panelName].DecreaseRefCount();
     }
     #endregion
 
@@ -151,6 +162,11 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
             m_eventSystem = Instantiate(Resources.Load<GameObject>("Prefabs/EventSystem")).GetComponent<EventSystem>();
             m_eventSystem.transform.SetParent(transform, false);
         }
+
+        m_showedPanelGroup = new GameObject("Active Panels").transform;
+        m_cachedGroup = new GameObject("Cached Panels").transform;
+        m_showedPanelGroup.SetParent(transform);
+        m_cachedGroup.SetParent(transform);
     }
     #endregion
 
@@ -173,9 +189,22 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
 
     private class CachedPanel
     {
-        public string key;
-        public UIPanel panel;
+        private UIPanel panel;
+        private string key;
         private int refCount = 1;
+
+        #region 构造器
+        public CachedPanel(UIPanel panel, string key)
+        {
+            this.panel = panel;
+            this.key = key;
+        }
+        #endregion
+
+        #region 属性
+        public UIPanel Panel { get => panel; }
+        public string Key { get => key; }
+        #endregion
 
         public void IncreaseRefCount() 
         {
@@ -191,6 +220,21 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
                 Instance.cachedPanels.Remove(key);
             }
         }
+    }
+
+    public class PanelDependency 
+    {
+        private string key;
+        private LoadPanelPrefabFrom loadPanelPrefabFrom;
+
+        public PanelDependency(string key, LoadPanelPrefabFrom loadPanelPrefabFrom)
+        {
+            this.key = key;
+            this.loadPanelPrefabFrom = loadPanelPrefabFrom;
+        }
+
+        public string Key { get => key; }
+        public LoadPanelPrefabFrom LoadPanelPrefabFrom { get => loadPanelPrefabFrom; }
     }
     #endregion
 }

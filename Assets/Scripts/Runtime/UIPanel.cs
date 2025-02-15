@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// UI面板基类
+/// </summary>
 [RequireComponent(typeof(Canvas), typeof(CanvasGroup))]
 public abstract class UIPanel : MonoBehaviour
 {
@@ -7,6 +10,7 @@ public abstract class UIPanel : MonoBehaviour
     private CanvasGroup m_canvasGroup;
 
     private bool isFrozen;
+    private bool isDiposed = false;
 
     #region 属性
     public Canvas Canvas
@@ -38,7 +42,7 @@ public abstract class UIPanel : MonoBehaviour
     /// <summary>
     /// 需要预加载的UI面板
     /// </summary>
-    public virtual string[] PreloadPanels { get => null; }
+    public virtual UIManager.PanelDependency[] PreloadPanels { get => new UIManager.PanelDependency[] { }; }
     #endregion
 
     #region Public 方法
@@ -81,9 +85,12 @@ public abstract class UIPanel : MonoBehaviour
     {
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        //UIManager.Instance.
+        foreach (var panel in PreloadPanels) 
+        {
+            UIManager.Instance.UnloadPanel(panel.Key);
+        }
     }
     #endregion
 }
