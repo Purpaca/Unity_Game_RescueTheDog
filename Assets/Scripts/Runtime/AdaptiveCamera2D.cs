@@ -65,7 +65,7 @@ public class AdaptiveCamera2D : MonoBehaviour
     /// <summary>
     /// 获取适配的相机正交尺寸
     /// </summary>
-    /// <param name="mode">适配模式</param>
+    /// <param name="axis">适配轴向</param>
     private float GetAdaptedCameraSize(AdaptedAxis axis)
     {
         switch (axis)

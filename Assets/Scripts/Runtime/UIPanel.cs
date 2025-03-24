@@ -10,7 +10,6 @@ public abstract class UIPanel : MonoBehaviour
     private CanvasGroup m_canvasGroup;
 
     private bool isFrozen;
-    private bool isDiposed = false;
 
     #region 属性
     public Canvas Canvas
@@ -38,11 +37,6 @@ public abstract class UIPanel : MonoBehaviour
             return m_canvasGroup;
         }
     }
-
-    /// <summary>
-    /// 需要预加载的UI面板
-    /// </summary>
-    public virtual UIManager.PanelDependency[] PreloadPanels { get => new UIManager.PanelDependency[] { }; }
     #endregion
 
     #region Public 方法
@@ -74,6 +68,10 @@ public abstract class UIPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 当面板物体被创建时执行以进行一些初始化操作，等同于MonoBehaviour.Awake()
+    /// </summary>
+    protected virtual void OnInit() { }
     public virtual void OnShow() { }
     public virtual void OnClose() { }
     public virtual void OnFreeze() { }
@@ -81,16 +79,24 @@ public abstract class UIPanel : MonoBehaviour
     #endregion
 
     #region Unity 消息
-    protected virtual void Awake()
+    private void Awake()
     {
+        OnInit();
     }
 
-    protected virtual void OnDestroy()
+    private void Start()
     {
-        foreach (var panel in PreloadPanels) 
-        {
-            UIManager.Instance.UnloadPanel(panel.Key);
-        }
+        
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    private void OnDestroy()
+    {
+        
     }
     #endregion
 }

@@ -16,6 +16,7 @@ public class UIManager : AutoInstantiateMonoSingleton<UIManager>
     private List<UIPanel> existPanels;
     private Dictionary<string, CachedPanel> cachedPanels;
     
+    private int minorder = 0;
     private int order = 0;
     private bool isOpeningPanel = false;
 

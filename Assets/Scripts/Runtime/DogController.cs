@@ -83,7 +83,7 @@ public class DogController : MonoBehaviour
         if (_isDead) 
         {
             return;
-        };
+        }
 
         _isDead = true;
         DogAnimationState state = isKilledByBee ? DogAnimationState.DamagedCrying : DogAnimationState.Crying;

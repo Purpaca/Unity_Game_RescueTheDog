@@ -75,7 +75,7 @@ public class LevelConfig : ScriptableObject
     public class CombInfo
     {
         [SerializeField, Tooltip("蜂巢的位置")]
-        public Vector2 positon;
+        public Vector2 position;
 
         [SerializeField, Tooltip("蜂巢的朝向")]
         public CombFacingDirection direction;
@@ -87,7 +87,7 @@ public class LevelConfig : ScriptableObject
         /// <summary>
         /// 此蜂巢的位置
         /// </summary>
-        public Vector2 Position { get => positon; }
+        public Vector2 Position { get => position; }
 
         /// <summary>
         /// 蜂巢的朝向

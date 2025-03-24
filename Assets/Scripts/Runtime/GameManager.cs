@@ -164,7 +164,7 @@ public class GameManager : MonoSingleton<GameManager>
             CombController comb = Instantiate(_combPrefabAsset).GetComponent<CombController>();
             comb.SetBeesToEmit(combInfo.bees);
 
-            comb.transform.position = new Vector3(combInfo.positon.x, combInfo.positon.y, -1.0f);
+            comb.transform.position = new Vector3(combInfo.position.x, combInfo.position.y, -1.0f);
             Vector3 pos = comb.transform.localScale;
             pos.x = combInfo.direction == LevelConfig.CombInfo.CombFacingDirection.Left ? -1 : 1;
             comb.transform.localScale = pos;

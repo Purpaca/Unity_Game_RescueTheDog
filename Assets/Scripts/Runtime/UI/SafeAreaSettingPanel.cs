@@ -20,10 +20,8 @@ public class SafeAreaSettingPanel : UIPanel
     Button m_buttonConfirm;
 
     #region Unity 消息
-    protected override void Awake()
+    protected override void OnInit()
     {
-        base.Awake();
-
         var rectTransform = GetComponent<RectTransform>();
         m_sliderUp.onValueChanged.AddListener((value) =>
         {

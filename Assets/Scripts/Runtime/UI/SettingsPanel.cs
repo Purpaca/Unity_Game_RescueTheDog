@@ -53,10 +53,8 @@ public class SettingsPanel : UIPanel
     }
 
     #region Unity 消息
-    protected override void Awake()
+    protected override void OnInit()
     {
-        base.Awake();
-
         m_slider_mus.onValueChanged.AddListener((value) =>
         {
             GameManager.MusicVolume = value;
